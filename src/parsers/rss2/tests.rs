@@ -23,11 +23,15 @@ fn test_parse_rss2() {
                 </item>
             </channel>
         </rss>"#;
-    let feeds = parse(xml);
-    match feeds {
-        Ok(feeds) => {
-            assert_eq!(feeds.len(), 2);
-        }
-        Err(_e) => {}
-    }
+    let feeds = parse(xml).unwrap();
+    let feed1 = &feeds[0];
+    assert_eq!(feed1.title, "Item 1");
+    assert_eq!(feed1.link, "http://www.example.com/item1.html");
+    assert_eq!(feed1.description.clone().unwrap(), "Item 1 description");
+    assert_eq!(feed1.publish_date.clone().unwrap(), "2024-01-01T23:59:02Z");
+
+    let feed2 = &feeds[1];
+    assert_eq!(feed2.title, "Item 2");
+    assert_eq!(feed2.link, "http://www.example.com/item2.html");
+    assert_eq!(feed2.description.clone().unwrap(), "Item 2 description");
 }
