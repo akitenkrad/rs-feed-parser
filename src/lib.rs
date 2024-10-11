@@ -26,7 +26,7 @@
 //!     </channel>
 //! </rss>
 //! "#;
-//! let feeds: Vec<Feed> = rss2::parse(rss_data);
+//! let feeds: Vec<Feed> = rss2::parse(rss_data).unwrap();
 //! assert_eq!(feeds[0].title, "Item 1");
 //! assert_eq!(feeds[0].link, "http://www.example.com/item1.html");
 //! assert_eq!(feeds[0].description.clone().unwrap(), "Item 1 description");

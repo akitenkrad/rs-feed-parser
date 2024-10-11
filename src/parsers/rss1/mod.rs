@@ -9,7 +9,7 @@ use std::io::Cursor;
 #[cfg(test)]
 mod tests;
 
-pub fn parse(text: &str) -> Vec<Feed> {
+pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
     let mut reader = Reader::from_str(text);
     reader.config_mut().trim_text(true);
 
@@ -49,7 +49,6 @@ pub fn parse(text: &str) -> Vec<Feed> {
                         .write_event(Event::End(BytesEnd::new("item")))
                         .is_ok());
                     let feed_text = writer.into_inner().into_inner();
-                    println!("{}", str::from_utf8(&feed_text).unwrap());
                     let feed = from_str::<Feed>(str::from_utf8(&feed_text).unwrap()).unwrap();
                     feeds.push(feed);
 
@@ -81,8 +80,14 @@ pub fn parse(text: &str) -> Vec<Feed> {
             }
             Ok(Event::Eof) => break,
             Ok(_e) => {}
-            Err(e) => panic!("Error at position {}: {:?}", reader.error_position(), e),
+            Err(e) => {
+                return Err(format!(
+                    "Error at position {}: {:?}",
+                    reader.error_position(),
+                    e
+                ))
+            }
         }
     }
-    return feeds;
+    return Ok(feeds);
 }
