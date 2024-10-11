@@ -21,6 +21,14 @@ fn test_parse_rss2() {
                     <link>http://www.example.com/item2.html</link>
                     <description>Item 2 description</description>
                 </item>
+                <item>
+                    <title>Item 3</title>
+                    <link>http://www.example.com/item3.html</link>
+                    <description>
+                        <![CDATA[続きを読む...</a></b></p> ]]>
+                    </description>
+                    <pubDate>2024-01-01T23:59:02Z</pubDate>
+                </item>
             </channel>
         </rss>"#;
     let feeds = parse(xml).unwrap();
@@ -34,4 +42,13 @@ fn test_parse_rss2() {
     assert_eq!(feed2.title, "Item 2");
     assert_eq!(feed2.link, "http://www.example.com/item2.html");
     assert_eq!(feed2.description.clone().unwrap(), "Item 2 description");
+
+    let feed3 = &feeds[2];
+    assert_eq!(feed3.title, "Item 3");
+    assert_eq!(feed3.link, "http://www.example.com/item3.html");
+    assert_eq!(
+        feed3.description.clone().unwrap(),
+        "続きを読む...</a></b></p> "
+    );
+    assert_eq!(feed3.publish_date.clone().unwrap(), "2024-01-01T23:59:02Z");
 }

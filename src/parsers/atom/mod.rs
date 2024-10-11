@@ -101,6 +101,11 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                     assert!(writer.write_event(Event::Text(e)).is_ok());
                 }
             }
+            Ok(Event::CData(e)) => {
+                if parsing {
+                    assert!(writer.write_event(Event::CData(e)).is_ok());
+                }
+            }
             Ok(Event::Eof) => break,
             Ok(_e) => {}
             Err(e) => {
