@@ -25,17 +25,24 @@ fn test_parse_atom() {
                 <summary>Item 2 description</summary>
             </entry>
             <entry>
-                <title>Item 2</title>
-                <link href="http://www.example.com/item2.html"/>
-                <link href="http://www.example.com/item2.html" type="image/png" rel="enclosure" />
+                <title>Item 3</title>
+                <link href="http://www.example.com/item3.html"/>
+                <link href="http://www.example.com/item3.html" type="image/png" rel="enclosure" />
                 <summary>Item 2 description</summary>
+                <published>2003-12-13T08:29:29-04:00</published>
+            </entry>
+            <entry>
+                <title>Item 4</title>
+                <link href="http://www.example.com/item4.html" type="text/html" />
+                <link href="http://www.example.com/item4.html" type="image/png" rel="enclosure" />
+                <summary>Item 4 description</summary>
                 <published>2003-12-13T08:29:29-04:00</published>
             </entry>
         </feed>"#;
     let feeds = parse(xml);
     match feeds {
         Ok(feeds) => {
-            assert_eq!(feeds.len(), 3);
+            assert_eq!(feeds.len(), 4);
         }
         Err(_e) => {}
     }
