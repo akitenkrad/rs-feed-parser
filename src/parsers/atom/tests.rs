@@ -13,6 +13,7 @@ fn test_parse_atom() {
             <entry>
                 <title>Atom-Powered Robots Run Amok</title>
                 <link href="http://example.org/2003/12/13/atom03"/>
+                <link href="http://example.org/2003/12/13/atom03" type="image/png" rel="enclosure" />
                 <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
                 <updated>2003-12-13T18:30:02Z</updated>
                 <summary>Some text.</summary>
@@ -20,6 +21,7 @@ fn test_parse_atom() {
             <entry>
                 <title>Item 2</title>
                 <link href="http://www.example.com/item2.html"/>
+                <link href="http://www.example.com/item2.html" type="image/png" rel="enclosure" />
                 <summary>Item 2 description</summary>
             </entry>
         </feed>"#;

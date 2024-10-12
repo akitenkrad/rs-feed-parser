@@ -32,6 +32,8 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                         assert!(writer
                             .write_event(Event::Start(BytesStart::new("publish_date")))
                             .is_ok());
+                    } else if e.name().as_ref() == b"link" {
+                        continue;
                     } else {
                         assert!(writer.write_event(Event::Start(e.clone())).is_ok());
                     }
@@ -46,6 +48,19 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
             Ok(Event::Empty(e)) => {
                 if parsing {
                     if e.name().as_ref() == b"link" {
+                        let mut is_link = true;
+                        for attr in e.attributes() {
+                            let attr = attr.unwrap();
+                            if attr.key.0 == b"type" {
+                                let attr_text: &str = str::from_utf8(attr.value.as_ref()).unwrap();
+                                if !attr_text.is_empty() {
+                                    is_link = false;
+                                }
+                            }
+                        }
+                        if !is_link {
+                            continue;
+                        }
                         for attr in e.attributes() {
                             let attr = attr.unwrap();
                             if attr.key.0 == b"href" {
@@ -91,6 +106,8 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                         assert!(writer
                             .write_event(Event::End(BytesEnd::new("publish_date")))
                             .is_ok());
+                    } else if e.name().as_ref() == b"link" {
+                        continue;
                     } else {
                         assert!(writer.write_event(Event::End(e)).is_ok());
                     }
