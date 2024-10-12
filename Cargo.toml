@@ -1,6 +1,6 @@
 [package]
 name = "feed-parser"
-version = "1.0.3"
+version = "1.0.4"
 edition = "2021"
 description = "A simple RSS/Atom feed parser"
 license = "Apache-2.0"
