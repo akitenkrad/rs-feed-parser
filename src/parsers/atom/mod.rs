@@ -51,14 +51,25 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                         let mut is_link = true;
                         for attr in e.attributes() {
                             let attr = attr.unwrap();
-                            if attr.key.0 == b"type" {
-                                let attr_text: &str = str::from_utf8(attr.value.as_ref()).unwrap();
-                                if !attr_text.is_empty() {
-                                    is_link = false;
+                            match attr.key.0 {
+                                b"type" => {
+                                    let attr_text: &str =
+                                        str::from_utf8(attr.value.as_ref()).unwrap();
+                                    if !attr_text.is_empty() {
+                                        is_link = false;
+                                    }
                                 }
+                                b"rel" => {
+                                    let attr_text: &str =
+                                        str::from_utf8(attr.value.as_ref()).unwrap();
+                                    if !attr_text.is_empty() {
+                                        is_link = false;
+                                    }
+                                }
+                                _ => {}
                             }
                         }
-                        if !is_link {
+                        if is_link == false {
                             continue;
                         }
                         for attr in e.attributes() {
