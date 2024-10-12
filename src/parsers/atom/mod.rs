@@ -28,7 +28,7 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                         assert!(writer
                             .write_event(Event::Start(BytesStart::new("date")))
                             .is_ok());
-                    } else if e.name().as_ref() == b"pubDate" {
+                    } else if e.name().as_ref() == b"pubDate" || e.name().as_ref() == b"published" {
                         assert!(writer
                             .write_event(Event::Start(BytesStart::new("publish_date")))
                             .is_ok());
@@ -113,7 +113,7 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                         assert!(writer
                             .write_event(Event::End(BytesEnd::new("date")))
                             .is_ok());
-                    } else if e.name().as_ref() == b"pubDate" {
+                    } else if e.name().as_ref() == b"pubDate" || e.name().as_ref() == b"published" {
                         assert!(writer
                             .write_event(Event::End(BytesEnd::new("publish_date")))
                             .is_ok());

@@ -24,12 +24,25 @@ fn test_parse_atom() {
                 <link href="http://www.example.com/item2.html" type="image/png" rel="enclosure" />
                 <summary>Item 2 description</summary>
             </entry>
+            <entry>
+                <title>Item 2</title>
+                <link href="http://www.example.com/item2.html"/>
+                <link href="http://www.example.com/item2.html" type="image/png" rel="enclosure" />
+                <summary>Item 2 description</summary>
+                <published>2003-12-13T08:29:29-04:00</published>
+            </entry>
         </feed>"#;
     let feeds = parse(xml);
     match feeds {
         Ok(feeds) => {
-            assert_eq!(feeds.len(), 2);
+            assert_eq!(feeds.len(), 3);
         }
         Err(_e) => {}
     }
+    let feeds = parse(xml).unwrap();
+    let feed = feeds.get(2).unwrap();
+    assert_eq!(
+        feed.publish_date,
+        Some("2003-12-13T08:29:29-04:00".to_string())
+    );
 }
