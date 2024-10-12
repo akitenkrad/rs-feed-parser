@@ -56,6 +56,11 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                                 if attr_text != "text/html" {
                                     is_link = false;
                                 }
+                            } else if attr.key.0 == b"rel" {
+                                let attr_text: &str = str::from_utf8(attr.value.as_ref()).unwrap();
+                                if attr_text != "alternate" {
+                                    is_link = false;
+                                }
                             }
                         }
                         if is_link == false {

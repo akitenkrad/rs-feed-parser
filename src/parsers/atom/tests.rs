@@ -33,8 +33,9 @@ fn test_parse_atom() {
             </entry>
             <entry>
                 <title>Item 4</title>
-                <link href="http://www.example.com/item4.html" type="text/html" />
+                <link href="http://www.example.com/item4.html" rel="alternate" type="text/html" />
                 <link href="http://www.example.com/item4.html" type="image/png" rel="enclosure" />
+                <link href="http://www.example.com/item4.xml" rel="self" type="application/atom+xml" />
                 <summary>Item 4 description</summary>
                 <published>2003-12-13T08:29:29-04:00</published>
             </entry>
