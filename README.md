@@ -1,3 +1,5 @@
+https://img.shields.io/crates/v/feed-parser
+
 # feed-parser
 
 This module contains various parsers used in the feed-parser library.
