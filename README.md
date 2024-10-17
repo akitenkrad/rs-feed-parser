@@ -1,4 +1,4 @@
-https://img.shields.io/crates/v/feed-parser
+<img alt="Crates.io Version" src="https://img.shields.io/crates/v/feed-parser"/>
 
 # feed-parser
 
