@@ -1,8 +1,9 @@
 [package]
 name = "feed-parser"
-version = "1.0.9"
+version = "1.0.10"
 edition = "2021"
 description = "A simple RSS/Atom feed parser"
+repository = "https://github.com/akitenkrad/feed-parser.git"
 license = "Apache-2.0"
 
 [dependencies]
