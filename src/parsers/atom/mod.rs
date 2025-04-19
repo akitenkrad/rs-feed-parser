@@ -4,13 +4,31 @@ use quick_xml::de::from_str;
 use quick_xml::events::{BytesEnd, BytesStart, BytesText, Event};
 use quick_xml::Reader;
 use quick_xml::Writer;
+use regex::Regex;
 use std::io::Cursor;
 
 #[cfg(test)]
 mod tests;
 
+fn preprocess(text: &str) -> String {
+    let tags = vec!["title", "description", "summary", "content"];
+    let mut text = text.to_string();
+    for tag in tags {
+        let re = Regex::new(&format!(r#"<{}>(?<content>.*?)</{}>"#, tag, tag)).unwrap();
+        let m = re.replace_all(&text, |caps: &regex::Captures| {
+            let content = &caps["content"];
+            let content = html_escape::encode_text(content);
+            format!("<{}>{}</{}>", tag, content, tag)
+        });
+        text = m.to_string();
+    }
+    return text.to_string();
+}
+
 pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
-    let mut reader = Reader::from_str(text);
+    let text = preprocess(text);
+
+    let mut reader = Reader::from_str(&text);
     reader.config_mut().trim_text(true);
 
     let mut feeds = Vec::new();
@@ -31,6 +49,10 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
                     } else if e.name().as_ref() == b"pubDate" || e.name().as_ref() == b"published" {
                         assert!(writer
                             .write_event(Event::Start(BytesStart::new("publish_date")))
+                            .is_ok());
+                    } else if e.name().as_ref() == b"description" {
+                        assert!(writer
+                            .write_event(Event::Start(BytesStart::new("description")))
                             .is_ok());
                     } else if e.name().as_ref() == b"link" {
                         continue;
@@ -120,6 +142,9 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
             }
             Ok(Event::Text(e)) => {
                 if parsing {
+                    let text = str::from_utf8(&e as &[u8]).unwrap();
+                    let text = html_escape::decode_html_entities(text);
+                    let e = BytesText::new(&text);
                     assert!(writer.write_event(Event::Text(e)).is_ok());
                 }
             }
@@ -131,11 +156,7 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
             Ok(Event::Eof) => break,
             Ok(_e) => {}
             Err(e) => {
-                return Err(format!(
-                    "Error at position {}: {:?}",
-                    reader.error_position(),
-                    e
-                ))
+                println!("Error at position {}: {:?}", reader.error_position(), e);
             }
         }
     }

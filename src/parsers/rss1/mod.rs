@@ -4,13 +4,31 @@ use quick_xml::de::from_str;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::Reader;
 use quick_xml::Writer;
+use regex::Regex;
 use std::io::Cursor;
 
 #[cfg(test)]
 mod tests;
 
+fn preprocess(text: &str) -> String {
+    let tags = vec!["title", "description", "summary", "content"];
+    let mut text = text.to_string();
+    for tag in tags {
+        let re = Regex::new(&format!(r#"<{}>(?<content>.*?)</{}>"#, tag, tag)).unwrap();
+        let m = re.replace_all(&text, |caps: &regex::Captures| {
+            let content = &caps["content"];
+            let content = html_escape::encode_text(content);
+            format!("<{}>{}</{}>", tag, content, tag)
+        });
+        text = m.to_string();
+    }
+    return text.to_string();
+}
+
 pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
-    let mut reader = Reader::from_str(text);
+    let text = preprocess(text);
+
+    let mut reader = Reader::from_str(&text);
     reader.config_mut().trim_text(true);
 
     let mut feeds = Vec::new();
