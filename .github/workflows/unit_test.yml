@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "src/**/*.rs"
+  workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
