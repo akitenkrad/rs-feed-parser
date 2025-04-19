@@ -1,6 +1,6 @@
 [package]
 name = "feed-parser"
-version = "1.0.10"
+version = "1.0.11"
 edition = "2021"
 description = "A simple RSS/Atom feed parser"
 repository = "https://github.com/akitenkrad/feed-parser.git"

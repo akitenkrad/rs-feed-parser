@@ -42,11 +42,7 @@ assert_eq!(feeds[0].description.clone().unwrap(), "Item 1 description");
 - `rss2`: Contains the RSS2.0 parser implementation.
 - `atom`: Contains the Atom parser implementation.
 
-## Errors
+## Release Notes
 
-Parsing errors are handled gracefully, with detailed error messages
-provided to help diagnose issues with the feed data.
-
-## License
-
-Apache-2.0
+- v1.0.11
+  - Made it possible to parse HTML in `<title></title>` and `<description></description>` sections.
