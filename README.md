@@ -1,5 +1,7 @@
 # feed-parser
 
+[![test](https://github.com/akitenkrad/rs-feed-parser/actions/workflows/unit_test.yml/badge.svg)](https://github.com/akitenkrad/rs-feed-parser/actions/workflows/unit_test.yml)
+
 This module contains various parsers used in the feed-parser library.
 
 The parsers module provides functionality to parse different types of
@@ -46,4 +48,5 @@ Parsing errors are handled gracefully, with detailed error messages
 provided to help diagnose issues with the feed data.
 
 ## License
+
 Apache-2.0
