@@ -1,4 +1,7 @@
-use crate::parsers::Feed;
+use crate::parsers::{
+    errors::{ParseError, ParseResult},
+    Feed,
+};
 use core::str;
 use quick_xml::de::from_str;
 use quick_xml::events::{BytesEnd, BytesStart, BytesText, Event};
@@ -25,7 +28,7 @@ fn preprocess(text: &str) -> String {
     return text.to_string();
 }
 
-pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
+pub fn parse(text: &str) -> ParseResult<Vec<Feed>> {
     let text = preprocess(text);
 
     let mut reader = Reader::from_str(&text);
@@ -156,7 +159,7 @@ pub fn parse(text: &str) -> Result<Vec<Feed>, String> {
             Ok(Event::Eof) => break,
             Ok(_e) => {}
             Err(e) => {
-                println!("Error at position {}: {:?}", reader.error_position(), e);
+                return Err(ParseError::XmlParseError(e));
             }
         }
     }

@@ -1,5 +1,6 @@
 use serde::Deserialize;
 pub mod atom;
+pub mod errors;
 pub mod rss1;
 pub mod rss2;
 

@@ -5,12 +5,12 @@ services:
     user: root
     tty: true
     volumes:
-      - ./:/workplace
+      - ./:/workspace
       - data:/data
       - /Users/akitenkrad/.ssh:/root/.ssh
     environment:
       TZ: Asia/Tokyo
-    working_dir: /workplace
+    working_dir: /workspace
     platform: linux/amd64
 volumes:
   data:

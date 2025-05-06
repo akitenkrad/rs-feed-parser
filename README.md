@@ -44,5 +44,9 @@ assert_eq!(feeds[0].description.clone().unwrap(), "Item 1 description");
 
 ## Release Notes
 
+- v1.0.12
+  - Added `AppError` and `AppResult` structs.
 - v1.0.11
   - Made it possible to parse HTML in `<title></title>` and `<description></description>` sections.
+
+## [For developers documents](docs/README.md)
